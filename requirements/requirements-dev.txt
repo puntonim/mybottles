@@ -1,0 +1,7 @@
+# Extend base requirements.
+-r requirements-base.txt
+
+flake8
+isort
+ipython
+ipdb

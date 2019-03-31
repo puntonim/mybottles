@@ -1,0 +1,16 @@
+#!/bin/bash
+# This hook is sourced after this virtualenv is activated.
+
+# If you use Virtualenvwrapper you can symlink this file:
+# ln -s ~/workspace/mybottles/conf/postactivate ~/.virtualenvs/mybottles/bin/postactivate
+
+VENVROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo "*** ACTIVATING VIRTUALENV $VENVROOT..."
+echo
+
+set -v
+ROOT=~/workspace/mybottles
+cd $ROOT
+alias manage="python $ROOT/manage.py"
+export DJANGO_SETTINGS_MODULE=conf.settings_development_paolo
+set +v
