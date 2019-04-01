@@ -336,3 +336,5 @@ pip-selfcheck.json
 venv/
 # Local settings.
 settings_development_*.py
+photos/
+

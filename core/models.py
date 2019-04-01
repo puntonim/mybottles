@@ -6,7 +6,7 @@ class Bottle(models.Model):
     update_ts = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=255)
     producer = models.ForeignKey('Producer', on_delete=models.SET_NULL, blank=True, null=True)
-    location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
+    vineyard_location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
     year = models.PositiveSmallIntegerField(blank=True, null=True)
     alcohol = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
 
@@ -16,7 +16,7 @@ class Bottle(models.Model):
 
 class Producer(models.Model):
     name = models.CharField(max_length=255)
-    location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
+    winery_location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return '{}|{}'.format(self.id, self.name)
