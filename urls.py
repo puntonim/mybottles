@@ -21,6 +21,9 @@ urlpatterns = [
     # Api views.
     path('api/', include('api.urls')),
 
+    # DJRF browsable APIs auth views.
+    path('api-auth/', include('rest_framework.urls')),
+
     # Django Admin.
     path('admin/', admin.site.urls),
 ]
