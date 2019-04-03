@@ -68,6 +68,9 @@ shell: _ensure_active_env
 tests: _ensure_active_env
 	python ./manage.py test
 
+recreatedevdb: _ensure_active_env
+	scripts/recreatedevdb.sh
+
 
 ## Linters.
 ## Without TOX.

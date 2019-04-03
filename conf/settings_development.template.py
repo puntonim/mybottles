@@ -32,3 +32,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 }
+
+INSTALLED_APPS += [
+    'django_extensions',
+]

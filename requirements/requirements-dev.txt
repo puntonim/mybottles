@@ -5,3 +5,5 @@ flake8
 isort
 ipython
 ipdb
+django-extensions
+python-dateutil  # Required by django-extensions' dumpscript/runscript
