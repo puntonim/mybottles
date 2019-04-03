@@ -3,17 +3,19 @@ from django.contrib import admin
 from . import models
 
 
-BOTTLEADMIN_READONLY_FIELDS = ('creation_ts', 'update_ts')
+READONLY_FIELDS = ('creation_ts', 'update_ts', 'uuid')
 
 
-class BottleAdmin(admin.ModelAdmin):
-    readonly_fields = BOTTLEADMIN_READONLY_FIELDS
-    fields = [field.name for field in models.Bottle._meta.fields if field.name not in ('id', ) + BOTTLEADMIN_READONLY_FIELDS]
+def ReadOnlyFieldsAdminBase(model):
+    class _ReadOnlyFieldsAdminBase(admin.ModelAdmin):
+        readonly_fields = [field.name for field in model._meta.fields if field.name in READONLY_FIELDS]
+        fields = [field.name for field in model._meta.fields if field.name not in ('id',)]
+    return _ReadOnlyFieldsAdminBase
 
 
-admin.site.register(models.Bottle, BottleAdmin)
-admin.site.register(models.Producer)
-admin.site.register(models.Location)
-admin.site.register(models.Store)
-admin.site.register(models.Purchase)
+admin.site.register(models.Bottle, ReadOnlyFieldsAdminBase(models.Bottle))
+admin.site.register(models.Producer, ReadOnlyFieldsAdminBase(models.Producer))
+admin.site.register(models.Location, ReadOnlyFieldsAdminBase(models.Location))
+admin.site.register(models.Store, ReadOnlyFieldsAdminBase(models.Store))
+admin.site.register(models.Purchase, ReadOnlyFieldsAdminBase(models.Purchase))
 admin.site.register(models.Photo)
