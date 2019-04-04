@@ -23,7 +23,7 @@ def unhealth(request):
     return 'It should have raised UnhealthTestException'
 
 
-class BottlesListView(generics.ListAPIView):
+class BottleListView(generics.ListAPIView):
     """
     $ curl 127.0.0.1:8000/api/bottles/
     """
@@ -32,7 +32,7 @@ class BottlesListView(generics.ListAPIView):
 
 
 ## Domain models version.
-# class BottlesListView(generics.ListAPIView):
+# class BottleListView(generics.ListAPIView):
 #     """
 #     $ curl "127.0.0.1:8000/api/bottles/"
 #     """
@@ -54,7 +54,7 @@ class BottleDetailView(generics.RetrieveAPIView):
 
 
 ## Domain models version.
-# class BottlesDetailView(generics.RetrieveAPIView):
+# class BottleDetailView(generics.RetrieveAPIView):
 #     serializer_class = serializers.BottleSerializer
 #     domain_model_class = bottles_domain.BottleDetailDomain
 #
