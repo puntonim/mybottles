@@ -23,9 +23,13 @@ def unhealth(request):
     return 'It should have raised UnhealthTestException'
 
 
-class BottleListView(generics.ListAPIView):
+class BottleListView(generics.ListCreateAPIView):
     """
-    $ curl 127.0.0.1:8000/api/bottles/
+    GET
+        $ curl 127.0.0.1:8000/api/bottles/
+    POST
+        $ curl 127.0.0.1:8000/api/bottles/ -d 'name=valp+classico&year=2019&producer=http://127.0.0.1:8000/api/producers/60321e2a-2d04-484f-8008-d874a590c4b6/'
+        $ curl 127.0.0.1:8000/api/bottles/ -d '{"name":"valpo class", "year":2019}' -H 'Content-Type: application/json'
     """
     serializer_class = serializers.BottleSerializer
     queryset = db_models.Bottle.objects.all()

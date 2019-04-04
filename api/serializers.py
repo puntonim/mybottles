@@ -8,9 +8,9 @@ from core import models as db_models
 
 class BottleSerializer(serializers.HyperlinkedModelSerializer):
     """
-    Original src:
+    >>> BottleSerializer():
         url = HyperlinkedIdentityField(lookup_field='uuid', view_name='bottle-detail')
-        uuid = UUIDField(required=False, validators=[<UniqueValidator(queryset=Bottle.objects.all())>])
+        uuid = UUIDField(read_only=True)
         creation_ts = DateTimeField(read_only=True)
         update_ts = DateTimeField(read_only=True)
         name = CharField(max_length=255)
@@ -19,10 +19,10 @@ class BottleSerializer(serializers.HyperlinkedModelSerializer):
         producer = HyperlinkedRelatedField(allow_null=True, lookup_field='uuid', queryset=Producer.objects.all(), required=False, view_name='producer-detail')
         vineyard_location = HyperlinkedRelatedField(allow_null=True, lookup_field='uuid', queryset=Location.objects.all(), required=False, view_name='location-detail')
     """
-
     class Meta:
         model = db_models.Bottle
-        fields = '__all__'  # Or: exclude = ('slug',)
+        fields = '__all__'  # Or: exclude = ('year',)
+        read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
             'producer': {'lookup_field': 'uuid'},
