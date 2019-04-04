@@ -1,3 +1,4 @@
 # Extend base requirements.
 -r requirements_base.txt
 
+pytest-django

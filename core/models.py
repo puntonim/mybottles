@@ -31,7 +31,10 @@ class Producer(models.Model):
         unique_together = (('name', 'winery_location'),)
 
     def __str__(self):
-        return '{}|{}'.format(self.id, self.name)
+        pretty = '{}|{}'.format(self.id, self.name)
+        if self.winery_location:
+            pretty += '|' + str(self.winery_location.name)
+        return pretty
 
 
 class Location(models.Model):

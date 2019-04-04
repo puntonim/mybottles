@@ -72,7 +72,8 @@ shellplus: _ensure_active_env
 	python ./manage.py shell_plus
 
 tests: _ensure_active_env
-	python ./manage.py test
+	#python ./manage.py test
+	pytest tests
 
 recreatedevdb: _ensure_active_env
 	scripts/recreatedevdb.sh

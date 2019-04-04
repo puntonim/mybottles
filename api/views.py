@@ -32,7 +32,7 @@ class BottleListView(generics.ListCreateAPIView):
         $ curl 127.0.0.1:8000/api/bottles/ -d '{"name":"valpo class", "year":2019}' -H 'Content-Type: application/json'
     """
     serializer_class = serializers.BottleSerializer
-    queryset = db_models.Bottle.objects.all()
+    queryset = db_models.Bottle.objects.order_by('-update_ts')
 
 
 ## Domain models version.
