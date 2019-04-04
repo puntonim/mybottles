@@ -7,3 +7,4 @@ ipython
 ipdb
 django-extensions
 python-dateutil  # Required by django-extensions' dumpscript/runscript
+Werkzeug  # Required by django-extensions' runserver_plus

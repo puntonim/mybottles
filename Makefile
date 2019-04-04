@@ -62,8 +62,14 @@ killmanage: _ensure_active_env
 serve: _ensure_active_env
 	python ./manage.py runserver
 
+serveplus: _ensure_active_env
+	python ./manage.py runserver_plus --nopin
+
 shell: _ensure_active_env
 	python ./manage.py shell
+
+shellplus: _ensure_active_env
+	python ./manage.py shell_plus
 
 tests: _ensure_active_env
 	python ./manage.py test
