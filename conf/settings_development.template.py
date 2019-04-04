@@ -1,11 +1,18 @@
 """
 Development settings.
 """
+from datetime import datetime
 
 from .settings_base import *
 
-
 DEBUG = True
+
+HEADER = '\033[95m'
+ENDC = '\033[0m'
+BOLD = '\033[1m'
+print('\n {}{}** SETTINGS PAOLO {}'.format(HEADER, BOLD, datetime.now().isoformat()))
+print(' ** DEBUG={}{}\n'.format(DEBUG, ENDC))
+
 SECRET_KEY = 'secretkey'
 AUTH_PASSWORD_VALIDATORS = []
 ALLOWED_HOSTS = ['*']
