@@ -10,9 +10,10 @@ Or install the requirements in the active venv:
 ```bash
 $ make requirements
 ```
-Use a handy `postactivate` script for `virtualenvwrapper`:
+Use a handy `postactivate` script for `virtualenvwrapper`: copy the file
+`~/workspace/mybottles/conf/postactivate.template` to `postactivate_paolo` and edit it. Then:
 ```bash
-$ ln -sf ~/workspace/mybottles/conf/postactivate ~/.virtualenvs/mybottles/bin/postactivate
+$ ln -sf ~/workspace/mybottles/conf/postactivate_paolo ~/.virtualenvs/mybottles/bin/postactivate
 ```
 Migrate:
 ```bash
