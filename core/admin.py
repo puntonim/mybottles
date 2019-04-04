@@ -13,7 +13,15 @@ def ReadOnlyFieldsAdminBase(model):
     return _ReadOnlyFieldsAdminBase
 
 
-admin.site.register(models.Bottle, ReadOnlyFieldsAdminBase(models.Bottle))
+class BottleAdmin(ReadOnlyFieldsAdminBase(models.Bottle)):
+    list_display = ('update_ts', 'name', 'producer_name', 'year')
+    ordering = ('-update_ts', )
+
+    def producer_name(self, obj):
+        return obj.producer.name if obj.producer else None
+
+
+admin.site.register(models.Bottle, BottleAdmin)
 admin.site.register(models.Producer, ReadOnlyFieldsAdminBase(models.Producer))
 admin.site.register(models.Location, ReadOnlyFieldsAdminBase(models.Location))
 admin.site.register(models.Store, ReadOnlyFieldsAdminBase(models.Store))
