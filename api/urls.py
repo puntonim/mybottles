@@ -2,7 +2,6 @@ from django.urls import path, re_path
 
 from . import views
 
-
 urlpatterns = [
     path('health/', views.health, name='health'),
     path('unhealth/', views.unhealth, name='unhealth'),
@@ -13,4 +12,5 @@ urlpatterns = [
     re_path(r'^producers/(?P<uuid>[\w\\-]+)/$', views.ProducerDetailView.as_view(), name='producer-detail'),
     re_path(r'^locations/$', views.LocationListView.as_view(), name='location-list'),
     re_path(r'^locations/(?P<uuid>[\w\\-]+)/$', views.LocationDetailView.as_view(), name='location-detail'),
+    re_path(r'^photos/$', views.PhotoListView.as_view(), name='photo-list'),
 ]

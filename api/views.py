@@ -1,12 +1,10 @@
 from django.http import JsonResponse
 from django.utils import timezone
-
-from rest_framework import generics, mixins
+from rest_framework import generics
 
 from core import models as db_models
 
 from . import serializers
-from .domain_models import bottles_domain
 
 
 def health(request):
@@ -97,3 +95,16 @@ class LocationDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.LocationSerializer
     queryset = db_models.Location.objects.all()
     lookup_field = 'uuid'
+
+
+class PhotoListView(generics.CreateAPIView):
+    """
+    POST
+        $ curl 127.0.0.1:8000/api/photos/ -F "bottle=http://127.0.0.1:8000/api/bottles/9ec758ae-f380-428c-b380-109476b13b6d/" -F "file=@/tmp/img.jpg"
+    """
+    serializer_class = serializers.PhotoSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data = None
+        return response

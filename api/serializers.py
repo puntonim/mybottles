@@ -48,8 +48,40 @@ class BottleSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class BottleSerializerDetailed(BottleSerializer):
+    """
+    BottleSerializerDetailed():
+        url = HyperlinkedIdentityField(lookup_field='uuid', view_name='bottle-detail')
+        uuid = UUIDField(read_only=True)
+        update_ts = DateTimeField(read_only=True)
+        name = CharField(max_length=255)
+        producer = HyperlinkedRelatedField(allow_null=True, lookup_field='uuid', queryset=Producer.objects.all(), required=False, view_name='producer-detail')
+        vineyard_location = HyperlinkedRelatedField(allow_null=True, lookup_field='uuid', queryset=Location.objects.all(), required=False, view_name='location-detail')
+        year = IntegerField(allow_null=True, required=False)
+        alcohol = DecimalField(allow_null=True, decimal_places=1, max_digits=3, required=False)
+        producer_details = ProducerSerializerDetailed(read_only=True, source='producer'):
+            url = HyperlinkedIdentityField(lookup_field='uuid', view_name='producer-detail')
+            uuid = UUIDField(read_only=True)
+            name = CharField(max_length=255)
+            winery_location = HyperlinkedRelatedField(allow_null=True, lookup_field='uuid', queryset=Location.objects.all(), required=False, view_name='location-detail')
+            winery_location_details = LocationSerializer(read_only=True, source='winery_location'):
+                url = HyperlinkedIdentityField(lookup_field='uuid', view_name='location-detail')
+                uuid = UUIDField(read_only=True)
+                name = CharField(max_length=255, validators=[<UniqueValidator(queryset=Location.objects.all())>])
+        vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location'):
+            url = HyperlinkedIdentityField(lookup_field='uuid', view_name='location-detail')
+            uuid = UUIDField(read_only=True)
+            name = CharField(max_length=255, validators=[<UniqueValidator(queryset=Location.objects.all())>]
+    """
     producer_details = ProducerSerializerDetailed(read_only=True, source='producer')
     vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location')
 
     class Meta(BottleSerializer.Meta):
         fields = BottleSerializer.Meta.fields + ('producer_details', 'vineyard_location_details')
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    bottle = serializers.HyperlinkedRelatedField(lookup_field='uuid', queryset=db_models.Bottle.objects.all(), view_name='bottle-detail')
+
+    class Meta:
+        model = db_models.Photo
+        exclude = ('id', )
