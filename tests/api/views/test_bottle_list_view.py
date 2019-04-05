@@ -13,7 +13,7 @@ class TestBottleListView(TestCase):
 
     def test_get(self):
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()['count'], 2)
+        assert response.status_code == 200
+        assert response.json()['count'] == 2
         assertions.assertBottleEqual(response.json()['results'][0], self.bottle2)
         assertions.assertBottleEqual(response.json()['results'][1], self.bottle1)
