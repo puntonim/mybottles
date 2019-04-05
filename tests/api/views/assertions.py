@@ -20,6 +20,9 @@ class _ModelAssertionBase:
             if not hasattr(self.object, attr) and attr == 'url':
                 self._assert_attr_url()
                 continue
+            if not hasattr(self.object, attr) and attr.endswith('_details'):
+                getattr(self, '_assert_attr_{}'.format(attr))()
+                continue
             if not getattr(self.object, attr):
                 assert not self.serialized[attr]
                 continue
@@ -63,6 +66,9 @@ class _ModelAssertionBase:
             producer_uuid = self.object.producer.uuid
         assert self.serialized['producer'] == 'http://testserver/api/producers/{}/'.format(producer_uuid)
 
+    def _assert_attr_producer_details(self):
+        assert_producer_equal(self.serialized['producer_details'], self.object.producer)
+
     def _assert_attr_vineyard_location(self):
         if isinstance(self.object.vineyard_location, str):
             vineyard_location_uuid = self.object.vineyard_location.split('/')[-2]
@@ -70,12 +76,18 @@ class _ModelAssertionBase:
             vineyard_location_uuid = self.object.vineyard_location.uuid
         assert self.serialized['vineyard_location'] == 'http://testserver/api/locations/{}/'.format(vineyard_location_uuid)
 
+    def _assert_attr_vineyard_location_details(self):
+        assert_location_equal(self.serialized['vineyard_location_details'], self.object.vineyard_location)
+
     def _assert_attr_winery_location(self):
         if isinstance(self.object.winery_location, str):
             winery_location_uuid = self.object.winery_location.split('/')[-2]
         else:
             winery_location_uuid = self.object.winery_location.uuid
         assert self.serialized['winery_location'] == 'http://testserver/api/locations/{}/'.format(winery_location_uuid)
+
+    def _assert_attr_winery_location_details(self):
+        assert_location_equal(self.serialized['winery_location_details'], self.object.winery_location)
 
 
 def assert_bottle_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):

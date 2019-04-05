@@ -57,7 +57,7 @@ class BottleDetailView(generics.RetrieveUpdateAPIView):
     PUT
         $ curl 127.0.0.1:8000/api/bottles/<uuid>/ -d '{"name":"valpo class", "year":2019}' -X PUT -H 'Content-Type: application/json'
     """
-    serializer_class = serializers.BottleSerializer
+    serializer_class = serializers.BottleSerializerDetailed
     queryset = db_models.Bottle.objects.all()
     lookup_field = 'uuid'
 
@@ -81,7 +81,7 @@ class ProducerDetailView(generics.RetrieveUpdateAPIView):
     PUT
         $ curl 127.0.0.1:8000/api/producers/<uuid>/ -d '{"name":"newname", "winery_location":"newurl"}' -X PUT -H 'Content-Type: application/json'
     """
-    serializer_class = serializers.ProducerSerializer
+    serializer_class = serializers.ProducerSerializerDetailed
     queryset = db_models.Producer.objects.all()
     lookup_field = 'uuid'
 
