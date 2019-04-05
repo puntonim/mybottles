@@ -9,7 +9,7 @@ from core import models as db_models
 class LocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Location
-        fields = '__all__'
+        fields = ('url', 'uuid', 'name')
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
         }
@@ -18,7 +18,7 @@ class LocationSerializer(serializers.HyperlinkedModelSerializer):
 class ProducerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Producer
-        fields = '__all__'
+        fields = ('url', 'uuid', 'winery_location')
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
             'winery_location': {'lookup_field': 'uuid'},
@@ -28,11 +28,15 @@ class ProducerSerializer(serializers.HyperlinkedModelSerializer):
 class ProducerSerializerDetailed(ProducerSerializer):
     winery_location_details = LocationSerializer(read_only=True, source='winery_location')
 
+    class Meta(ProducerSerializer.Meta):
+        fields = ProducerSerializer.Meta.fields + ('winery_location_details',)
+
 
 class BottleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Bottle
-        fields = '__all__'  # Or: exclude = ('year',)
+        # fields = '__all__'  # Or: exclude = ('year',)  # But this was you cannot control the order.
+        fields = ('url', 'uuid', 'update_ts', 'name', 'producer', 'vineyard_location', 'year', 'alcohol',)
         read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
@@ -44,3 +48,6 @@ class BottleSerializer(serializers.HyperlinkedModelSerializer):
 class BottleSerializerDetailed(BottleSerializer):
     producer_details = ProducerSerializerDetailed(read_only=True, source='producer')
     vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location')
+
+    class Meta(BottleSerializer.Meta):
+        fields = BottleSerializer.Meta.fields + ('producer_details', 'vineyard_location_details')
