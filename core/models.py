@@ -27,12 +27,9 @@ class Bottle(models.Model):
 
 
 class Producer(models.Model):
-    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4)
     name = models.CharField(max_length=255)
     winery_location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
-
-    class Meta:
-        unique_together = (('name', 'winery_location'),)
 
     def get_absolute_url(self):
         from django.urls import reverse

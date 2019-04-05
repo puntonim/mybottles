@@ -6,6 +6,28 @@ from tests.factories import models_factories
 from . import assertions
 
 
+class TestLocationListView(TestCase):
+    def setUp(self, **kwargs):
+        self.url = '/api/locations/'
+        self.location1 = models_factories.LocationFactory()
+        self.location2 = models_factories.LocationFactory()
+
+    def test_get(self):
+        response = self.client.get(self.url)
+        assert response.status_code == 200
+        assert response.json()['count'] == 2
+        assertions.assert_location_equal(response.json()['results'][0], self.location2)
+        assertions.assert_location_equal(response.json()['results'][1], self.location1)
+
+    def test_post(self):
+        data = {'name': 'new location'}
+        response = self.client.post(self.url, data)
+        assert response.status_code == 201
+        assert models.Location.objects.count() == 3
+        location = models.Location.objects.order_by('-id')[0]
+        assertions.assert_location_equal(response.json(), location)
+
+
 class TestLocationDetailView(TestCase):
     def setUp(self, **kwargs):
         self.base_url = '/api/locations'

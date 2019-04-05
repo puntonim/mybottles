@@ -35,19 +35,6 @@ class BottleListView(generics.ListCreateAPIView):
     queryset = db_models.Bottle.objects.order_by('-update_ts')
 
 
-## Domain models version.
-# class BottleListView(generics.ListAPIView):
-#     """
-#     $ curl "127.0.0.1:8000/api/bottles/"
-#     """
-#     serializer_class = serializers.BottleSerializer
-#     domain_model_class = bottles_domain.BottlesListDomain
-#
-#     def get_queryset(self, *args, **kwargs):
-#         self.domain_model = self.domain_model_class()
-#         return self.domain_model.get_queryset()
-
-
 class BottleDetailView(generics.RetrieveUpdateAPIView):
     """
     GET
@@ -62,14 +49,15 @@ class BottleDetailView(generics.RetrieveUpdateAPIView):
     lookup_field = 'uuid'
 
 
-## Domain models version.
-# class BottleDetailView(generics.RetrieveAPIView):
-#     serializer_class = serializers.BottleSerializer
-#     domain_model_class = bottles_domain.BottleDetailDomain
-#
-#     def get_object(self):
-#         self.domain_model = self.domain_model_class()
-#         return self.domain_model.get_object(self.kwargs['pk'])
+class ProducerListView(generics.ListCreateAPIView):
+    """
+    GET
+        $ curl 127.0.0.1:8000/api/producers/
+    POST
+        $ curl 127.0.0.1:8000/api/producers/ -d '{"name":"bolla"}' -H 'Content-Type: application/json'
+    """
+    serializer_class = serializers.ProducerSerializer
+    queryset = db_models.Producer.objects.order_by('-id')
 
 
 class ProducerDetailView(generics.RetrieveUpdateAPIView):
@@ -84,6 +72,17 @@ class ProducerDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.ProducerSerializerDetailed
     queryset = db_models.Producer.objects.all()
     lookup_field = 'uuid'
+
+
+class LocationListView(generics.ListCreateAPIView):
+    """
+    GET
+        $ curl 127.0.0.1:8000/api/locations/
+    POST
+        $ curl 127.0.0.1:8000/api/locations/ -d '{"name":"alba"}' -H 'Content-Type: application/json'
+    """
+    serializer_class = serializers.LocationSerializer
+    queryset = db_models.Location.objects.order_by('-id')
 
 
 class LocationDetailView(generics.RetrieveUpdateAPIView):

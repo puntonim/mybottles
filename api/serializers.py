@@ -10,6 +10,7 @@ class LocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Location
         fields = ('url', 'uuid', 'name')
+        read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
         }
@@ -18,7 +19,8 @@ class LocationSerializer(serializers.HyperlinkedModelSerializer):
 class ProducerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Producer
-        fields = ('url', 'uuid', 'winery_location')
+        fields = ('url', 'uuid', 'name', 'winery_location')
+        read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
             'winery_location': {'lookup_field': 'uuid'},
