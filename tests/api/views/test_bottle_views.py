@@ -48,10 +48,30 @@ class TestBottleListView(TestCase):
 class TestBottleDetailView(TestCase):
     def setUp(self, **kwargs):
         self.base_url = '/api/bottles'
-        self.bottle = models_factories.BottleFactory()
+        self.bottle = models_factories.BottleFactory(name='initialname', year=2019)
 
     def test_get(self):
-        bottle = models.Bottle.objects.order_by('-update_ts')[0]
-        response = self.client.get('{}/{}/'.format(self.base_url, bottle.uuid))
+        response = self.client.get('{}/{}/'.format(self.base_url, self.bottle.uuid))
         assert response.status_code == 200
+        bottle = models.Bottle.objects.get(uuid=self.bottle.uuid)
+        assertions.assert_bottle_equal(response.json(), bottle)
+
+    def test_patch(self):
+        year = 2010
+        data = dict(year=year)
+        response = self.client.patch('{}/{}/'.format(self.base_url, self.bottle.uuid), data, content_type='application/json')
+        assert response.status_code == 200
+        bottle = models.Bottle.objects.get(uuid=self.bottle.uuid)
+        assert bottle.year == year
+        assertions.assert_bottle_equal(response.json(), bottle)
+
+    def test_put(self):
+        name = 'newname'
+        year = 2010
+        data = dict(name=name, year=year)
+        response = self.client.put('{}/{}/'.format(self.base_url, self.bottle.uuid), data, content_type='application/json')
+        assert response.status_code == 200
+        bottle = models.Bottle.objects.get(uuid=self.bottle.uuid)
+        assert bottle.name == name
+        assert bottle.year == year
         assertions.assert_bottle_equal(response.json(), bottle)

@@ -13,6 +13,10 @@ class Bottle(models.Model):
     year = models.PositiveSmallIntegerField(blank=True, null=True)
     alcohol = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('bottle-detail', kwargs=dict(uuid=self.uuid))
+
     def __str__(self):
         pretty = '{}|{}'.format(self.id, self.name)
         if self.producer and self.producer.name:
@@ -30,6 +34,10 @@ class Producer(models.Model):
     class Meta:
         unique_together = (('name', 'winery_location'),)
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('producer-detail', kwargs=dict(uuid=self.uuid))
+
     def __str__(self):
         pretty = '{}|{}'.format(self.id, self.name)
         if self.winery_location:
@@ -41,6 +49,10 @@ class Location(models.Model):
     uuid = models.UUIDField(unique=True, default=uuid.uuid4)
     # Examples: Alba, Valpolicella, Jesi.
     name = models.CharField(max_length=255, unique=True)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('location-detail', kwargs=dict(uuid=self.uuid))
 
     def __str__(self):
         return '{}|{}'.format(self.id, self.name)

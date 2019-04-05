@@ -16,3 +16,23 @@ class TestProducerDetailView(TestCase):
         response = self.client.get('{}/{}/'.format(self.base_url, producer.uuid))
         assert response.status_code == 200
         assertions.assert_producer_equal(response.json(), producer)
+
+    def test_patch(self):
+        winery_location = models_factories.LocationFactory()
+        data = dict(winery_location=winery_location.get_absolute_url())
+        response = self.client.patch('{}/{}/'.format(self.base_url, self.producer.uuid), data, content_type='application/json')
+        assert response.status_code == 200
+        producer = models.Producer.objects.get(uuid=self.producer.uuid)
+        assert producer.winery_location == winery_location
+        assertions.assert_producer_equal(response.json(), producer)
+
+    def test_put(self):
+        name = 'newname'
+        winery_location = models_factories.LocationFactory()
+        data = dict(name=name, winery_location=winery_location.get_absolute_url())
+        response = self.client.put('{}/{}/'.format(self.base_url, self.producer.uuid), data, content_type='application/json')
+        assert response.status_code == 200
+        producer = models.Producer.objects.get(uuid=self.producer.uuid)
+        assert producer.name == name
+        assert producer.winery_location == winery_location
+        assertions.assert_producer_equal(response.json(), producer)

@@ -48,9 +48,14 @@ class BottleListView(generics.ListCreateAPIView):
 #         return self.domain_model.get_queryset()
 
 
-class BottleDetailView(generics.RetrieveAPIView):
+class BottleDetailView(generics.RetrieveUpdateAPIView):
     """
-    $ curl curl 127.0.0.1:8000/api/bottles/1/
+    GET
+        $ curl curl 127.0.0.1:8000/api/bottles/<uuid>/
+    PATCH
+        $ curl 127.0.0.1:8000/api/bottles/<uuid>/ -d '{"year":2019}' -X PATCH -H 'Content-Type: application/json'
+    PUT
+        $ curl 127.0.0.1:8000/api/bottles/<uuid>/ -d '{"name":"valpo class", "year":2019}' -X PUT -H 'Content-Type: application/json'
     """
     serializer_class = serializers.BottleSerializer
     queryset = db_models.Bottle.objects.all()
@@ -67,18 +72,28 @@ class BottleDetailView(generics.RetrieveAPIView):
 #         return self.domain_model.get_object(self.kwargs['pk'])
 
 
-class ProducerDetailView(generics.RetrieveAPIView):
+class ProducerDetailView(generics.RetrieveUpdateAPIView):
     """
-    $ curl 127.0.0.1:8000/api/producers/1/
+    GET
+        $ curl 127.0.0.1:8000/api/producers/<uuid>/
+    PATCH
+        $ curl 127.0.0.1:8000/api/producers/<uuid>/ -d '{"winery_location":"newurl"}' -X PATCH -H 'Content-Type: application/json'
+    PUT
+        $ curl 127.0.0.1:8000/api/producers/<uuid>/ -d '{"name":"newname", "winery_location":"newurl"}' -X PUT -H 'Content-Type: application/json'
     """
     serializer_class = serializers.ProducerSerializer
     queryset = db_models.Producer.objects.all()
     lookup_field = 'uuid'
 
 
-class LocationDetailView(generics.RetrieveAPIView):
+class LocationDetailView(generics.RetrieveUpdateAPIView):
     """
-    $ curl 127.0.0.1:8000/api/locations/1/
+    GET
+        $ curl 127.0.0.1:8000/api/locations/<uuid>/
+    PATCH
+        $ curl 127.0.0.1:8000/api/locations/<uuid>/ -d '{"name":"newname"}' -X PATCH -H 'Content-Type: application/json'
+    PUT
+        $ curl 127.0.0.1:8000/api/locations/<uuid>/ -d '{"name":"newname"}' -X PUT -H 'Content-Type: application/json'
     """
     serializer_class = serializers.LocationSerializer
     queryset = db_models.Location.objects.all()
