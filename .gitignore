@@ -337,4 +337,4 @@ venv/
 # Local settings.
 settings_development_*.py
 postactivate_*
-photos/
+media/

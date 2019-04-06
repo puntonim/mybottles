@@ -49,7 +49,7 @@ class BottleSerializer(serializers.HyperlinkedModelSerializer):
 
 class BottleSerializerDetailed(BottleSerializer):
     """
-    BottleSerializerDetailed():
+    >>> BottleSerializerDetailed():
         url = HyperlinkedIdentityField(lookup_field='uuid', view_name='bottle-detail')
         uuid = UUIDField(read_only=True)
         update_ts = DateTimeField(read_only=True)
@@ -70,13 +70,20 @@ class BottleSerializerDetailed(BottleSerializer):
         vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location'):
             url = HyperlinkedIdentityField(lookup_field='uuid', view_name='location-detail')
             uuid = UUIDField(read_only=True)
-            name = CharField(max_length=255, validators=[<UniqueValidator(queryset=Location.objects.all())>]
+            name = CharField(max_length=255, validators=[<UniqueValidator(queryset=Location.objects.all())>])
+        photos = SerializerMethodField(read_only=True)
     """
     producer_details = ProducerSerializerDetailed(read_only=True, source='producer')
     vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location')
+    photos = serializers.SerializerMethodField(
+        read_only=True,
+     )
 
     class Meta(BottleSerializer.Meta):
-        fields = BottleSerializer.Meta.fields + ('producer_details', 'vineyard_location_details')
+        fields = BottleSerializer.Meta.fields + ('producer_details', 'vineyard_location_details', 'photos')
+
+    def get_photos(self, obj):
+        return [photo.file.url for photo in obj.photo_set.all()]
 
 
 class PhotoSerializer(serializers.ModelSerializer):
