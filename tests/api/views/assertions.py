@@ -1,6 +1,6 @@
-import pytz
-
 from types import SimpleNamespace
+
+import pytz
 from django.conf import settings
 
 

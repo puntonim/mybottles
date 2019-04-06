@@ -14,7 +14,6 @@ import factory
 
 from core import models
 
-
 _ITALIAN_WINES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'italian_wines.txt')
 
 

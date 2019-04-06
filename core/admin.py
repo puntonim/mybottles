@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from . import models
 
-
 DEFAULT_READONLY_FIELDS = ('creation_ts', 'update_ts', 'uuid')
 DEFAULT_SEARCH_FIELDS = ('uuid', 'name')
 

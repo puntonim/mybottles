@@ -1,3 +1,6 @@
+"""
+isort:skip_file
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 

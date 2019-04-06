@@ -89,7 +89,7 @@ lint: _make_venv_if_empty
 	flake8 . --exclude=venv,*_local.py
 
 isort: _make_venv_if_empty
-	isort -rc . --skip venv
+	isort -rc .
 
 isort-check: _make_venv_if_empty
-	isort -rc -c . --skip venv
+	isort -rc -c .
