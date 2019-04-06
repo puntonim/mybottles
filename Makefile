@@ -75,6 +75,9 @@ tests: _ensure_active_env
 	#python ./manage.py test
 	pytest tests -s
 
+test/%: _ensure_active_env
+	pytest tests -s -k $*
+
 recreatedevdb: _ensure_active_env
 	scripts/recreatedevdb.sh
 
