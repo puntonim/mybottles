@@ -71,15 +71,21 @@ shell: _ensure_active_env
 shellplus: _ensure_active_env
 	python ./manage.py shell_plus
 
-tests: _ensure_active_env
+tests-dev: _ensure_active_env
 	#python ./manage.py test
 	pytest tests -s
 
-test/%: _ensure_active_env
+test-dev/%: _ensure_active_env
 	pytest tests -s -k $*
 
-recreatedevdb: _ensure_active_env
-	scripts/recreatedevdb.sh
+recreatedb-dev: _ensure_active_env
+	scripts/recreatedbdev.sh
+
+
+## Tests.
+
+tests: clean venv
+	pytest tests -s
 
 
 ## Linters.
