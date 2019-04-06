@@ -42,7 +42,8 @@ class TestLocationDetailView(TestCase):
     def test_patch(self):
         name = 'newname'
         data = dict(name=name)
-        response = self.client.patch('{}/{}/'.format(self.base_url, self.location.uuid), data, content_type='application/json')
+        response = self.client.patch('{}/{}/'.format(self.base_url, self.location.uuid), data,
+                                     content_type='application/json')
         assert response.status_code == 200
         location = models.Location.objects.get(uuid=self.location.uuid)
         assert location.name == name
@@ -51,7 +52,8 @@ class TestLocationDetailView(TestCase):
     def test_put(self):
         name = 'newname'
         data = dict(name=name)
-        response = self.client.put('{}/{}/'.format(self.base_url, self.location.uuid), data, content_type='application/json')
+        response = self.client.put('{}/{}/'.format(self.base_url, self.location.uuid), data,
+                                   content_type='application/json')
         assert response.status_code == 200
         location = models.Location.objects.get(uuid=self.location.uuid)
         assert location.name == name

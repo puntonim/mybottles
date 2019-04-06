@@ -59,7 +59,8 @@ class TestBottleDetailView(TestCase):
     def test_patch(self):
         year = 2010
         data = dict(year=year)
-        response = self.client.patch('{}/{}/'.format(self.base_url, self.bottle.uuid), data, content_type='application/json')
+        response = self.client.patch('{}/{}/'.format(self.base_url, self.bottle.uuid), data,
+                                     content_type='application/json')
         assert response.status_code == 200
         bottle = models.Bottle.objects.get(uuid=self.bottle.uuid)
         assert bottle.year == year
@@ -69,7 +70,8 @@ class TestBottleDetailView(TestCase):
         name = 'newname'
         year = 2010
         data = dict(name=name, year=year)
-        response = self.client.put('{}/{}/'.format(self.base_url, self.bottle.uuid), data, content_type='application/json')
+        response = self.client.put('{}/{}/'.format(self.base_url, self.bottle.uuid), data,
+                                   content_type='application/json')
         assert response.status_code == 200
         bottle = models.Bottle.objects.get(uuid=self.bottle.uuid)
         assert bottle.name == name

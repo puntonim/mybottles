@@ -70,7 +70,8 @@ class _ModelAssertionBase:
             vineyard_location_uuid = self.object.vineyard_location.split('/')[-2]
         else:
             vineyard_location_uuid = self.object.vineyard_location.uuid
-        assert self.serialized['vineyard_location'] == 'http://testserver/api/locations/{}/'.format(vineyard_location_uuid)
+        assert self.serialized['vineyard_location'] == 'http://testserver/api/locations/{}/'.format(
+            vineyard_location_uuid)
 
     def _assert_attr_vineyard_location_details(self):
         assert_location_equal(self.serialized['vineyard_location_details'], self.object.vineyard_location)
@@ -93,14 +94,17 @@ class _ModelAssertionBase:
 
 def assert_bottle_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
     model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
-    model_assertion.assert_equal(base_url='http://testserver/api/bottles', do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
+    model_assertion.assert_equal(base_url='http://testserver/api/bottles',
+                                 do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
 
 
 def assert_producer_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
     model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
-    model_assertion.assert_equal(base_url='http://testserver/api/producers', do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
+    model_assertion.assert_equal(base_url='http://testserver/api/producers',
+                                 do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
 
 
 def assert_location_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
     model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
-    model_assertion.assert_equal(base_url='http://testserver/api/locations', do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
+    model_assertion.assert_equal(base_url='http://testserver/api/locations',
+                                 do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)

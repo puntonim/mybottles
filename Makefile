@@ -86,7 +86,7 @@ recreatedevdb: _ensure_active_env
 ## Without TOX.
 
 lint: _make_venv_if_empty
-	flake8 . --exclude=venv,*_local.py
+	flake8 .
 
 isort: _make_venv_if_empty
 	isort -rc .

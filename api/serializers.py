@@ -72,12 +72,10 @@ class BottleSerializerDetailed(BottleSerializer):
             uuid = UUIDField(read_only=True)
             name = CharField(max_length=255, validators=[<UniqueValidator(queryset=Location.objects.all())>])
         photos = SerializerMethodField(read_only=True)
-    """
+    """  # noqa E501
     producer_details = ProducerSerializerDetailed(read_only=True, source='producer')
     vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location')
-    photos = serializers.SerializerMethodField(
-        read_only=True,
-     )
+    photos = serializers.SerializerMethodField(read_only=True)
 
     class Meta(BottleSerializer.Meta):
         fields = BottleSerializer.Meta.fields + ('producer_details', 'vineyard_location_details', 'photos')
@@ -87,7 +85,8 @@ class BottleSerializerDetailed(BottleSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
-    bottle = serializers.HyperlinkedRelatedField(lookup_field='uuid', queryset=db_models.Bottle.objects.all(), view_name='bottle-detail')
+    bottle = serializers.HyperlinkedRelatedField(
+        lookup_field='uuid', queryset=db_models.Bottle.objects.all(), view_name='bottle-detail')
 
     class Meta:
         model = db_models.Photo
