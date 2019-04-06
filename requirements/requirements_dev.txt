@@ -1,8 +1,6 @@
 # Extend base requirements.
 -r requirements_base.txt
 
-flake8
-isort
 ipython
 ipdb
 django-extensions

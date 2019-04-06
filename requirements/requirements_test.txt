@@ -2,3 +2,6 @@
 -r requirements_base.txt
 
 pytest-django
+flake8
+isort
+factory_boy

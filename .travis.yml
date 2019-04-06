@@ -1,0 +1,15 @@
+dist: xenial   # required for Python >= 3.7
+
+language: python
+
+install: echo "Skip install step"
+
+python:
+  - "3.7"
+
+env:
+  - DJANGO_SETTINGS_MODULE=conf.settings_test
+
+script:
+  - make tests
+  - make isort-check lint

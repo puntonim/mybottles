@@ -1,4 +1,4 @@
-# MYBOTTLES
+# MyBottles [![Build Status](https://travis-ci.org/puntonim/mybottles.svg?branch=master)](https://travis-ci.org/puntonim/mybottles)
 
 
 ## Development
