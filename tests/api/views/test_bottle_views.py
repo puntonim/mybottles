@@ -9,8 +9,8 @@ from . import assertions
 class TestBottleListView(TestCase):
     def setUp(self, **kwargs):
         self.url = '/api/bottles/'
-        self.bottle1 = models_factories.BottleFactory()
-        self.bottle2 = models_factories.BottleFactory()
+        self.bottle1 = models_factories.BottleFactory(do_add_photo=True)
+        self.bottle2 = models_factories.BottleFactory(do_add_photo=True)
 
     def test_get(self):
         response = self.client.get(self.url)
@@ -48,7 +48,7 @@ class TestBottleListView(TestCase):
 class TestBottleDetailView(TestCase):
     def setUp(self, **kwargs):
         self.base_url = '/api/bottles'
-        self.bottle = models_factories.BottleFactory(name='initialname', year=2019)
+        self.bottle = models_factories.BottleFactory(name='initialname', year=2019, do_add_photo=True)
 
     def test_get(self):
         response = self.client.get('{}/{}/'.format(self.base_url, self.bottle.uuid))

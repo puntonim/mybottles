@@ -15,17 +15,13 @@ class _ModelAssertionBase:
     def assert_equal(self, base_url=None, do_ignore_missing_in_instance_or_dict=False):
         self.base_url = base_url
         for attr in self._get_all_attrs():
-            if not hasattr(self.object, attr) and do_ignore_missing_in_instance_or_dict:
-                continue
-            if not hasattr(self.object, attr) and attr == 'url':
-                self._assert_attr_url()
-                continue
-            if not hasattr(self.object, attr) and attr.endswith('_details'):
-                getattr(self, '_assert_attr_{}'.format(attr))()
-                continue
-            if not getattr(self.object, attr):
-                assert not self.serialized[attr]
-                continue
+            if not hasattr(self.object, attr):
+                if do_ignore_missing_in_instance_or_dict:
+                    continue
+            else:
+                if not getattr(self.object, attr):
+                    assert not self.serialized[attr]
+                    continue
 
             if hasattr(self, '_assert_attr_{}'.format(attr)):
                 getattr(self, '_assert_attr_{}'.format(attr))()
@@ -88,6 +84,11 @@ class _ModelAssertionBase:
 
     def _assert_attr_winery_location_details(self):
         assert_location_equal(self.serialized['winery_location_details'], self.object.winery_location)
+
+    def _assert_attr_photos(self):
+        assert len(self.serialized['photos']) == self.object.photo_set.count()
+        for photo in self.object.photo_set.all():
+            assert photo.file.url in self.serialized['photos']
 
 
 def assert_bottle_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):

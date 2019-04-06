@@ -52,13 +52,16 @@ class BottleFactory:
     A wrapper around the actual factory, to pick a random wine from a file first.
     Note that using a LazyAttribute would do the trick, but not with SubFactory (vineyard_location).
     """
-    def __new__(self, *args, **kwargs):
+    def __new__(self, do_add_photo=False, *args, **kwargs):
         random_wine = _pick_random_wine()
         if not kwargs.get('name'):
             kwargs['name'] = random_wine.name
         if not kwargs.get('vineyard_location'):
             kwargs['vineyard_location'] = LocationFactory(name=random_wine.region)
-        return _BottleFactory(*args, **kwargs)
+        obj = _BottleFactory(*args, **kwargs)
+        if do_add_photo:
+            PhotoFactory(bottle=obj)
+        return obj
 
 
 class _BottleFactory(factory.django.DjangoModelFactory):
@@ -70,3 +73,11 @@ class _BottleFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = models.Bottle
+
+
+class PhotoFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Photo
+
+    bottle = factory.SubFactory(_BottleFactory)
+    file = factory.Faker('file_path', locale='it_IT')
