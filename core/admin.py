@@ -62,7 +62,7 @@ class LocationAdmin(ReadOnlyFieldsAdminBase(models.Location)):
 
 
 class PhotoAdmin(ReadOnlyFieldsAdminBase(models.Photo)):
-    list_display = ('file',)
+    list_display = ('id', 'file', 'bottle')
 
 
 admin.site.register(models.Bottle, BottleAdmin)

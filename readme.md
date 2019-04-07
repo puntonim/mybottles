@@ -23,6 +23,14 @@ Serve at http://127.0.0.1:8000:
 ```bash
 $ make serve
 ```
+Recreate dev db with sample data:
+```bash
+$ make recreatedb-dev
+```
+Update sample data:
+```bash
+$ manage dumpscript core > scripts/fixture_sample_data1.py
+```
 
 
 ## Copyright
