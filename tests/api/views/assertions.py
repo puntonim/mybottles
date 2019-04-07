@@ -108,3 +108,9 @@ def assert_location_equal(serialized, instance_or_dict, do_ignore_missing_in_ins
     model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
     model_assertion.assert_equal(base_url='http://testserver/api/locations',
                                  do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
+
+
+def assert_store_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
+    model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
+    model_assertion.assert_equal(base_url='http://testserver/api/stores',
+                                 do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)

@@ -106,5 +106,46 @@ class PhotoListView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
+        # The response is an empty 201.
         response.data = None
         return response
+
+
+class StoreListView(generics.ListCreateAPIView):
+    """
+    GET
+        $ curl 127.0.0.1:8000/api/stores/
+    POST
+        $ curl 127.0.0.1:8000/api/stores/ -d '{"name":"iper brembate"}' -H 'Content-Type: application/json'
+    """  # noqa E501
+    serializer_class = serializers.StoreSerializer
+    queryset = db_models.Store.objects.order_by('-id')
+
+
+class StoreDetailView(generics.RetrieveUpdateAPIView):
+    """
+    GET
+        $ curl curl 127.0.0.1:8000/api/stores/<uuid>/
+    PATCH
+        $ curl 127.0.0.1:8000/api/stores/<uuid>/ -d '{"name":"iper brembate"}' -X PATCH -H 'Content-Type: application/json'
+    PUT
+        $ curl 127.0.0.1:8000/api/stores/<uuid>/ -d '{"name":"iper brembate"}' -X PUT -H 'Content-Type: application/json'
+    """  # noqa E501
+    serializer_class = serializers.StoreSerializer
+    queryset = db_models.Store.objects.all()
+    lookup_field = 'uuid'
+
+
+# class PurchaseListView(generics.CreateAPIView):
+#     """
+#     POST
+#         $ curl 127.0.0.1:8000/api/purchases/ -d '"bottle":"http://127.0.0.1:8000/api/bottles/9ec758ae-f380-428c-b380-
+#         109476b13b6d/",  ' -H 'Content-Type: application/json'
+#     """  # noqa E501
+#     serializer_class = serializers.PurchaseSerializer
+#
+#     def create(self, request, *args, **kwargs):
+#         response = super().create(request, *args, **kwargs)
+#         # The response is an empty 201.
+#         response.data = None
+#         return response

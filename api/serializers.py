@@ -91,3 +91,26 @@ class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = db_models.Photo
         exclude = ('id', )
+
+
+class StoreSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = db_models.Store
+        fields = '__all__'
+        read_only_fields = ('uuid',)
+        extra_kwargs = {
+            'url': {'lookup_field': 'uuid'},
+        }
+
+
+# class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = db_models.Photo
+#         fields = '__all__'
+#         # exclude = ('id', )
+#         read_only_fields = ('uuid',)
+#         extra_kwargs = {
+#             'url': {'lookup_field': 'uuid'},
+#             'bottle': {'lookup_field': 'uuid'},
+#             'store': {'lookup_field': 'uuid'},
+#         }

@@ -78,7 +78,7 @@ tests-dev: _ensure_active_env
 	#python ./manage.py test
 	pytest tests -s
 
-test-dev/%: _ensure_active_env
+tests-dev/%: _ensure_active_env
 	pytest tests -s -k $*
 
 recreatedb-dev: _ensure_active_env

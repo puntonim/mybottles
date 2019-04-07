@@ -13,4 +13,7 @@ urlpatterns = [
     re_path(r'^locations/$', views.LocationListView.as_view(), name='location-list'),
     re_path(r'^locations/(?P<uuid>[\w\\-]+)/$', views.LocationDetailView.as_view(), name='location-detail'),
     re_path(r'^photos/$', views.PhotoListView.as_view(), name='photo-list'),
+    re_path(r'^stores/$', views.StoreListView.as_view(), name='store-list'),
+    re_path(r'^stores/(?P<uuid>[\w\\-]+)/$', views.StoreDetailView.as_view(), name='store-detail'),
+    # re_path(r'^purchases/$', views.PurchaseListView.as_view(), name='purchase-list'),
 ]

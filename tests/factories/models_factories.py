@@ -28,7 +28,7 @@ def _pick_random_wine():
     name, label, region = line.split(';')
     name = name + ' ' + label
     Wine = namedtuple('Wine', 'name, region')
-    return Wine(name=name, region=region)
+    return Wine(name=name.strip(), region=region.strip())
 
 
 class LocationFactory(factory.django.DjangoModelFactory):
@@ -56,7 +56,9 @@ class BottleFactory:
         if not kwargs.get('name'):
             kwargs['name'] = random_wine.name
         if not kwargs.get('vineyard_location'):
-            kwargs['vineyard_location'] = LocationFactory(name=random_wine.region)
+            # Check if there is already such location.
+            location = models.Location.objects.filter(name=random_wine.region).first()
+            kwargs['vineyard_location'] = location or LocationFactory(name=random_wine.region)
         obj = _BottleFactory(*args, **kwargs)
         if do_add_photo:
             PhotoFactory(bottle=obj)
@@ -80,3 +82,10 @@ class PhotoFactory(factory.django.DjangoModelFactory):
 
     bottle = factory.SubFactory(_BottleFactory)
     file = factory.Faker('file_path', locale='it_IT')
+
+
+class StoreFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Store
+
+    name = factory.Faker('company', locale='it_IT')
