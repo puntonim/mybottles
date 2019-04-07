@@ -62,6 +62,20 @@ class _ModelAssertionBase:
             producer_uuid = self.object.producer.uuid
         assert self.serialized['producer'] == 'http://testserver/api/producers/{}/'.format(producer_uuid)
 
+    def _assert_attr_bottle(self):
+        if isinstance(self.object.bottle, str):
+            bottle_uuid = self.object.bottle.split('/')[-2]
+        else:
+            bottle_uuid = self.object.bottle.uuid
+        assert self.serialized['bottle'] == 'http://testserver/api/bottles/{}/'.format(bottle_uuid)
+
+    def _assert_attr_store(self):
+        if isinstance(self.object.store, str):
+            store_uuid = self.object.store.split('/')[-2]
+        else:
+            store_uuid = self.object.store.uuid
+        assert self.serialized['store'] == 'http://testserver/api/stores/{}/'.format(store_uuid)
+
     def _assert_attr_producer_details(self):
         assert_producer_equal(self.serialized['producer_details'], self.object.producer)
 
@@ -85,6 +99,9 @@ class _ModelAssertionBase:
 
     def _assert_attr_winery_location_details(self):
         assert_location_equal(self.serialized['winery_location_details'], self.object.winery_location)
+
+    def _assert_attr_store_details(self):
+        assert_store_equal(self.serialized['store_details'], self.object.store)
 
     def _assert_attr_photos(self):
         assert len(self.serialized['photos']) == self.object.photo_set.count()
@@ -113,4 +130,10 @@ def assert_location_equal(serialized, instance_or_dict, do_ignore_missing_in_ins
 def assert_store_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
     model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
     model_assertion.assert_equal(base_url='http://testserver/api/stores',
+                                 do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)
+
+
+def assert_purchase_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
+    model_assertion = _ModelAssertionBase(serialized, instance_or_dict)
+    model_assertion.assert_equal(base_url='http://testserver/api/purchases',
                                  do_ignore_missing_in_instance_or_dict=do_ignore_missing_in_instance_or_dict)

@@ -9,7 +9,7 @@ from core import models as db_models
 class LocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Location
-        fields = ('url', 'uuid', 'name')
+        fields = '__all__'
         read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
@@ -19,7 +19,7 @@ class LocationSerializer(serializers.HyperlinkedModelSerializer):
 class ProducerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Producer
-        fields = ('url', 'uuid', 'name', 'winery_location')
+        fields = '__all__'
         read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
@@ -30,15 +30,11 @@ class ProducerSerializer(serializers.HyperlinkedModelSerializer):
 class ProducerSerializerDetailed(ProducerSerializer):
     winery_location_details = LocationSerializer(read_only=True, source='winery_location')
 
-    class Meta(ProducerSerializer.Meta):
-        fields = ProducerSerializer.Meta.fields + ('winery_location_details',)
-
 
 class BottleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = db_models.Bottle
-        # fields = '__all__'  # Or: exclude = ('year',)  # But this was you cannot control the order.
-        fields = ('url', 'uuid', 'update_ts', 'name', 'producer', 'vineyard_location', 'year', 'alcohol',)
+        fields = '__all__'  # Or: exclude = ('year',)
         read_only_fields = ('uuid',)
         extra_kwargs = {
             'url': {'lookup_field': 'uuid'},
@@ -77,9 +73,6 @@ class BottleSerializerDetailed(BottleSerializer):
     vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location')
     photos = serializers.SerializerMethodField(read_only=True)
 
-    class Meta(BottleSerializer.Meta):
-        fields = BottleSerializer.Meta.fields + ('producer_details', 'vineyard_location_details', 'photos')
-
     def get_photos(self, obj):
         return [photo.file.url for photo in obj.photo_set.all()]
 
@@ -103,14 +96,17 @@ class StoreSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-# class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = db_models.Photo
-#         fields = '__all__'
-#         # exclude = ('id', )
-#         read_only_fields = ('uuid',)
-#         extra_kwargs = {
-#             'url': {'lookup_field': 'uuid'},
-#             'bottle': {'lookup_field': 'uuid'},
-#             'store': {'lookup_field': 'uuid'},
-#         }
+class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = db_models.Purchase
+        fields = '__all__'
+        read_only_fields = ('uuid',)
+        extra_kwargs = {
+            'url': {'lookup_field': 'uuid'},
+            'bottle': {'lookup_field': 'uuid'},
+            'store': {'lookup_field': 'uuid'},
+        }
+
+
+class PurchaseSerializerDetailed(PurchaseSerializer):
+    store_details = StoreSerializer(read_only=True, source='store')

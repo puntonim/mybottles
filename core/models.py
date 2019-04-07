@@ -70,7 +70,7 @@ class Purchase(models.Model):
     quantity = models.IntegerField(blank=True, null=True)
     price_paid = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     price_original = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    date = models.DateTimeField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
     store = models.ForeignKey('Store', on_delete=models.CASCADE)
 
     def __str__(self):

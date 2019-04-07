@@ -8,6 +8,10 @@ class TestPhotoListView(TestCase):
     def setUp(self, **kwargs):
         self.url = '/api/photos/'
 
+    def test_get(self):
+        response = self.client.get(self.url)
+        assert response.status_code == 405
+
     def test_post(self):
         bottle = models_factories.BottleFactory()
         with open(__file__) as fopen:
@@ -22,3 +26,23 @@ class TestPhotoListView(TestCase):
         assert photo.bottle == bottle
         assert photo.file
         photo.file.delete()
+
+
+class TestPhotoDetailView(TestCase):
+    def setUp(self, **kwargs):
+        self.base_url = '/api/photos'
+        self.photo = models_factories.PhotoFactory()
+
+    def test_get(self):
+        response = self.client.get('{}/{}/'.format(self.base_url, self.photo.id))
+        assert response.status_code == 404
+
+    def test_patch(self):
+        response = self.client.patch('{}/{}/'.format(self.base_url, self.photo.id), {},
+                                     content_type='application/json')
+        assert response.status_code == 404
+
+    def test_put(self):
+        response = self.client.put('{}/{}/'.format(self.base_url, self.photo.id), {},
+                                   content_type='application/json')
+        assert response.status_code == 404

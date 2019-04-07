@@ -136,16 +136,23 @@ class StoreDetailView(generics.RetrieveUpdateAPIView):
     lookup_field = 'uuid'
 
 
-# class PurchaseListView(generics.CreateAPIView):
-#     """
-#     POST
-#         $ curl 127.0.0.1:8000/api/purchases/ -d '"bottle":"http://127.0.0.1:8000/api/bottles/9ec758ae-f380-428c-b380-
-#         109476b13b6d/",  ' -H 'Content-Type: application/json'
-#     """  # noqa E501
-#     serializer_class = serializers.PurchaseSerializer
-#
-#     def create(self, request, *args, **kwargs):
-#         response = super().create(request, *args, **kwargs)
-#         # The response is an empty 201.
-#         response.data = None
-#         return response
+class PurchaseListView(generics.CreateAPIView):
+    """
+    POST
+        $ curl 127.0.0.1:8000/api/purchases/ -d '"{bottle":"http://127.0.0.1:8000/api/bottles/9ec758ae-f380-428c-b380-109476b13b6d/", "store":"http://127.0.0.1:8000/api/stores/0tr658ae-f380-428c-b380-109476b13j2f/"}' -H 'Content-Type: application/json'
+    """  # noqa E501
+    serializer_class = serializers.PurchaseSerializer
+
+
+class PurchaseDetailView(generics.RetrieveUpdateAPIView):
+    """
+    GET
+        $ curl curl 127.0.0.1:8000/api/purchases/<uuid>/
+    PATCH
+        $ curl 127.0.0.1:8000/api/purchases/<uuid>/ -d '{"quantity":2}' -X PATCH -H 'Content-Type: application/json'
+    PUT
+        $ curl 127.0.0.1:8000/api/purchases/<uuid>/ -d '{"quantity":2, "bottle":"http://127.0.0.1:8000/api/bottles/9ec758ae-f380-428c-b380-109476b13b6d/", "store":"http://127.0.0.1:8000/api/stores/0tr658ae-f380-428c-b380-109476b13j2f/"}' -X PUT -H 'Content-Type: application/json'
+    """  # noqa E501
+    serializer_class = serializers.PurchaseSerializerDetailed
+    queryset = db_models.Purchase.objects.all()
+    lookup_field = 'uuid'
