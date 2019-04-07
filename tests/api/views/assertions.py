@@ -108,6 +108,11 @@ class _ModelAssertionBase:
         for photo in self.object.photo_set.all():
             assert photo.file.url in self.serialized['photos']
 
+    def _assert_attr_purchases(self):
+        assert len(self.serialized['purchases']) == self.object.purchase_set.count()
+        for purchase in self.object.purchase_set.all():
+            assert 'http://testserver/api/purchases/{}/'.format(purchase.uuid) in self.serialized['purchases']
+
 
 def assert_bottle_equal(serialized, instance_or_dict, do_ignore_missing_in_instance_or_dict=False):
     model_assertion = _ModelAssertionBase(serialized, instance_or_dict)

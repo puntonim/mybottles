@@ -72,6 +72,8 @@ class BottleSerializerDetailed(BottleSerializer):
     producer_details = ProducerSerializerDetailed(read_only=True, source='producer')
     vineyard_location_details = LocationSerializer(read_only=True, source='vineyard_location')
     photos = serializers.SerializerMethodField(read_only=True)
+    purchases = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='purchase-detail',
+                                                    source='purchase_set', lookup_field='uuid')
 
     def get_photos(self, obj):
         return [photo.file.url for photo in obj.photo_set.all()]

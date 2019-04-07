@@ -48,7 +48,8 @@ class TestBottleListView(TestCase):
 class TestBottleDetailView(TestCase):
     def setUp(self, **kwargs):
         self.base_url = '/api/bottles'
-        self.bottle = models_factories.BottleFactory(name='initialname', year=2019, do_add_photo=True)
+        self.bottle = models_factories.BottleFactory(name='initialname', year=2019, do_add_photo=True,
+                                                     do_add_purchase=True)
 
     def test_get(self):
         response = self.client.get('{}/{}/'.format(self.base_url, self.bottle.uuid))
