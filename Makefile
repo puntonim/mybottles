@@ -11,7 +11,7 @@ PYTEST:="venv/bin/pytest"
 FLAKE8:="venv/bin/flake8"
 ISORT:="venv/bin/isort"
 
-.PHONY: venv deploy/qa requirements pyclean clean pipclean killmanage serve shell tests tox test pytests pytest lint isort setup.py publish
+.PHONY: venvtest requirements pyclean clean pipclean killmanage serve serveplus shell shellplus tests tests-dev recreatedb-dev lint isort isort-check
 
 venvtest:
 	$(VIRTUALENV) -p $(shell which python3) venv

@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from core import models as db_models
 
+from . import validators
+
 # TODO consider serpy to speed up the serialization:
 # https://github.com/clarkduvall/serpy
 
@@ -108,6 +110,13 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
             'bottle': {'lookup_field': 'uuid'},
             'store': {'lookup_field': 'uuid'},
         }
+
+    def validate(self, data, *args, **kwargs):
+        if self.instance:
+            for key in [field.name for field in self.instance._meta.fields]:
+                if key not in data:
+                    data[key] = getattr(self.instance, key)
+        return validators.validate_purchase(data, serializers.ValidationError)
 
 
 class PurchaseSerializerDetailed(PurchaseSerializer):

@@ -1,6 +1,9 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.db import models
+
+from api import validators
 
 
 class Bottle(models.Model):
@@ -71,10 +74,31 @@ class Purchase(models.Model):
     price_paid = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     price_original = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     date = models.DateField(blank=True, null=True)
-    store = models.ForeignKey('Store', on_delete=models.CASCADE)
+    store = models.ForeignKey('Store', on_delete=models.SET_NULL, blank=True, null=True)
+    is_gift = models.BooleanField(default=False)
+    notes = models.TextField(blank=True)
 
     def __str__(self):
         return '{}|bottle={}'.format(self.id, self.bottle)
+
+    def clean(self, *args, **kwargs):
+        """
+        Validation for Model forms and Django Admin forms. This method is automatically called in any Model form.
+        Note: this is not called by `obj.save()` by default. But this behavior has been intentionally added by
+        overriding `save()`.
+        """
+        # Use the same validator as the DJRF API serializer does.
+        data = {}
+        for key in [field.name for field in self._meta.fields]:
+            data[key] = getattr(self, key)
+        validators.validate_purchase(data, ValidationError)
+        super().clean(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        # Add the validation step by calling `self.clean()` (the same validation step that a Model form (like Django
+        # Admin ones do).
+        self.clean()
+        return super().save(*args, **kwargs)
 
 
 class Photo(models.Model):
