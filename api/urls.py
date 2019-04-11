@@ -1,10 +1,11 @@
-from django.urls import path, re_path
+from django.conf import settings
+from django.urls import include, path, re_path
 
 from . import views
 
 urlpatterns = [
-    path('health/', views.health, name='health'),
-    path('unhealth/', views.unhealth, name='unhealth'),
+    re_path(r'^health/', views.health, name='health'),
+    re_path(r'^unhealth/', views.unhealth, name='unhealth'),
 
     re_path(r'^bottles/$', views.BottleListView.as_view(), name='bottle-list'),
     re_path(r'^bottles/(?P<uuid>[\w\\-]+)/$', views.BottleDetailView.as_view(), name='bottle-detail'),
@@ -18,3 +19,10 @@ urlpatterns = [
     re_path(r'^purchases/$', views.PurchaseListView.as_view(), name='purchase-list'),
     re_path(r'^purchases/(?P<uuid>[\w\\-]+)/$', views.PurchaseDetailView.as_view(), name='purchase-detail'),
 ]
+
+if settings.DEBUG:
+    # TODO keep them?
+    urlpatterns += [
+        re_path('^searchtestpage/', include('haystack.urls')),
+        re_path('^searchtestendpoint/', views.search_test, name='search-test'),
+    ]

@@ -1,0 +1,43 @@
+# Docker containers for Elasticsearch 5 (the latest compatible with django-haystack) and Kibana.
+
+version: '3'
+
+services:
+
+  # https://www.elastic.co/guide/en/elasticsearch/reference/5.6/docker.html
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
+    ports:
+      - 9200:9200
+      #- 9300:9300  # not required.
+    volumes:
+      - ../.docker-data/elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true  # Prevent swapping.
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false  # So to use the REST API w/out auth.
+      - xpack.watcher.enabled=false
+    networks:
+      - elk
+
+  # https://www.elastic.co/guide/en/kibana/5.6/_configuring_kibana_on_docker.html
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.6.16
+    ports:
+      - 5601:5601  # Kibana available at: http://127.0.0.1:5601 (elastic - changeme)
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk:
+    driver: bridge
+
+
+# In order to log queries, in Kibana > Dev tools, execute:
+# PUT /haystack/_settings
+# {"index.indexing.slowlog.threshold.index.debug": "0s",
+# "index.search.slowlog.threshold.fetch.debug" : "0s",
+# "index.search.slowlog.threshold.query.debug": "0s"}
