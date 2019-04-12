@@ -7,7 +7,7 @@ from rest_framework import generics
 
 from core import models as db_models
 
-from . import serializers
+from . import filters, serializers
 
 
 def health(request):
@@ -34,6 +34,7 @@ class BottleListView(generics.ListCreateAPIView):
     """  # noqa E501
     serializer_class = serializers.BottleSerializer
     queryset = db_models.Bottle.objects.order_by('-update_ts')
+    filter_backends = (filters.SearchFilterBackend,)
 
 
 class BottleDetailView(generics.RetrieveUpdateAPIView):

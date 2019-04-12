@@ -1,3 +1,11 @@
 - Trello:
 https://trello.com/b/whG7N5gx/mybottles
 
+- Elasticsearch is really needed?
+No, I can implement a search (via the query string) against the database.
+```
+In [3]: Bottle.objects.filter(name__icontains='bARolo')
+Out[3]: <QuerySet [<Bottle: 2|Barolo DOCG|Tenimenti Ca' Bianca|2013>]>
+```
+Check out DJRF, which lets the search to happen in sevarl fields (even related model's fields):
+https://www.django-rest-framework.org/api-guide/filtering/#searchfilter
