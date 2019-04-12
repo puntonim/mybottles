@@ -160,10 +160,3 @@ class PurchaseDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.PurchaseSerializerDetailed
     queryset = db_models.Purchase.objects.all()
     lookup_field = 'uuid'
-
-
-def search_test(request):
-    # TODO keep it?
-    q = ' '.join(parse_qs(request.META['QUERY_STRING']).get('q'))
-    sqs = SearchQuerySet().auto_query(q)
-    return JsonResponse({'results': [str(res.object.__dict__) for res in sqs]})

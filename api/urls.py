@@ -19,10 +19,3 @@ urlpatterns = [
     re_path(r'^purchases/$', views.PurchaseListView.as_view(), name='purchase-list'),
     re_path(r'^purchases/(?P<uuid>[\w\\-]+)/$', views.PurchaseDetailView.as_view(), name='purchase-detail'),
 ]
-
-if settings.DEBUG:
-    # TODO keep them?
-    urlpatterns += [
-        re_path('^searchtestpage/', include('haystack.urls')),
-        re_path('^searchtestendpoint/', views.search_test, name='search-test'),
-    ]

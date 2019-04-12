@@ -1,3 +1,0 @@
-{{ object.name }}
-{{ object.vineyard_location.name }}
-{{ object.year }}
