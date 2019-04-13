@@ -56,6 +56,26 @@ class LocationIndex(indexes.SearchIndex, indexes.Indexable):
         return models.Location
 
 
+class ProducerIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True)
+
+    def get_model(self):
+        return models.Producer
+
+    def prepare_text(self, obj):
+        data = [obj.name]
+        if obj.winery_location:
+            data.append(obj.winery_location.name)
+        return '\n'.join(data)
+
+
+class StoreIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, model_attr='name')
+
+    def get_model(self):
+        return models.Store
+
+
 class RealTimeIndexerSignalProcessor(RealtimeSignalProcessor):
     """
     The stock RealtimeSignalProcessor works well only if the models itself is saved/deleted.

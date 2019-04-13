@@ -60,6 +60,7 @@ class ProducerListView(generics.ListCreateAPIView):
     """  # noqa E501
     serializer_class = serializers.ProducerSerializer
     queryset = db_models.Producer.objects.order_by('-id')
+    filter_backends = (filters.SearchFilterBackend,)
 
 
 class ProducerDetailView(generics.RetrieveUpdateAPIView):
@@ -125,6 +126,7 @@ class StoreListView(generics.ListCreateAPIView):
     """  # noqa E501
     serializer_class = serializers.StoreSerializer
     queryset = db_models.Store.objects.order_by('-id')
+    filter_backends = (filters.SearchFilterBackend,)
 
 
 class StoreDetailView(generics.RetrieveUpdateAPIView):
