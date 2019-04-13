@@ -1,7 +1,7 @@
 from haystack import indexes
 from haystack.signals import RealtimeSignalProcessor
 
-from .models import Bottle, Purchase
+from . import models
 
 
 class BottleIndex(indexes.SearchIndex, indexes.Indexable):
@@ -11,9 +11,9 @@ class BottleIndex(indexes.SearchIndex, indexes.Indexable):
     # Method version.
     text = indexes.CharField(document=True)
 
-    ## Extra fields used for search filtering (eg. filtering by date).
-    ## See: http://docs.haystacksearch.org/en/master/best_practices.html#additional-fields-for-filtering
-    # Used as timestamp in Kibana.
+    # Extra fields used for search filtering (eg. filtering by date).
+    # See: http://docs.haystacksearch.org/en/master/best_practices.html#additional-fields-for-filtering
+    # It can also be used as timestamp in Kibana.
     update_ts = indexes.DateTimeField(model_attr='update_ts')
     # year = indexes.IntegerField(model_attr='year')
     # vineyard_location = indexes.CharField(model_attr='vineyard_location__name')
@@ -28,7 +28,7 @@ class BottleIndex(indexes.SearchIndex, indexes.Indexable):
     #     return [photo.file.url for photo in obj.photo_set.all()]
 
     def get_model(self):
-        return Bottle
+        return models.Bottle
 
     # def index_queryset(self, using=None):
     #     """Used when the entire index for model is updated. You can use it to avoid indexing
@@ -49,7 +49,14 @@ class BottleIndex(indexes.SearchIndex, indexes.Indexable):
         return '\n'.join(data)
 
 
-class RealTimeIdexerSignalProcessor(RealtimeSignalProcessor):
+class LocationIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, model_attr='name')
+
+    def get_model(self):
+        return models.Location
+
+
+class RealTimeIndexerSignalProcessor(RealtimeSignalProcessor):
     """
     The stock RealtimeSignalProcessor works well only if the models itself is saved/deleted.
     BottleIndex includes a related field (Purchase.notes) and so we need to reindex BottleIndex
@@ -58,7 +65,7 @@ class RealTimeIdexerSignalProcessor(RealtimeSignalProcessor):
     def handle_save(self, sender, instance, **kwargs):
         using_backends = self.connection_router.for_write(instance=instance)
         for using in using_backends:
-            if sender == Purchase:
+            if sender == models.Purchase:
                 BottleIndex().update_object(instance.bottle, using=using)
         return super().handle_save(sender, instance, **kwargs)
 
@@ -69,7 +76,7 @@ class RealTimeIdexerSignalProcessor(RealtimeSignalProcessor):
         """
         using_backends = self.connection_router.for_write(instance=instance)
         for using in using_backends:
-            if sender == Purchase:
+            if sender == models.Purchase:
                 # No need to remove the bottle, but update it.
                 # BottleIndex().remove_object(instance.bottle, using=using)
                 BottleIndex().update_object(instance.bottle, using=using)

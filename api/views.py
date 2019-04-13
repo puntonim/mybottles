@@ -85,6 +85,7 @@ class LocationListView(generics.ListCreateAPIView):
     """
     serializer_class = serializers.LocationSerializer
     queryset = db_models.Location.objects.order_by('-id')
+    filter_backends = (filters.SearchFilterBackend,)
 
 
 class LocationDetailView(generics.RetrieveUpdateAPIView):

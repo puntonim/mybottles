@@ -157,5 +157,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     },
 }
-HAYSTACK_SIGNAL_PROCESSOR = 'core.search_indexes.RealTimeIdexerSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'core.search_indexes.RealTimeIndexerSignalProcessor'
 HAYSTACK_DEFAULT_OPERATOR = 'OR'
