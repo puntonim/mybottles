@@ -113,6 +113,8 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
 
     def validate(self, data, *args, **kwargs):
         if self.instance:
+            # Copy over the existing attributes (in case of an update via code
+            # or via a PATCH - if allowed).
             for key in [field.name for field in self.instance._meta.fields]:
                 if key not in data:
                     data[key] = getattr(self.instance, key)

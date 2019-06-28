@@ -2,7 +2,7 @@
 Factories are managed with FactoryBoy, see:
 https://factoryboy.readthedocs.io/en/latest/index.html
 
-Which include Fake, see:
+Which includes Fake, see:
 https://faker.readthedocs.io/en/stable/index.html
 """
 import linecache
@@ -51,7 +51,7 @@ class BottleFactory:
     A wrapper around the actual factory, to pick a random wine from a file first.
     Note that using a LazyAttribute would do the trick, but not with SubFactory (vineyard_location).
     """
-    def __new__(self, do_add_photo=False, do_add_purchase=False, *args, **kwargs):
+    def __new__(cls, do_add_photo=False, do_add_purchase=False, *args, **kwargs):
         random_wine = _pick_random_wine()
         if not kwargs.get('name'):
             kwargs['name'] = random_wine.name

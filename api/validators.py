@@ -3,7 +3,7 @@ Validators to be used in DJRF serializers and in Django db models.
 
 These validators should be typically used to validate a model in 3 spots:
 - DJRF api model serializer
-- db model clean(): that's the validation for Model and Django Admin forms
+- db model full_clean(): that's the validation for Model and Django Admin forms
 - db model save(): that's a forced validation for an obj.save()
 """
 
