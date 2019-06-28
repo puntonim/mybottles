@@ -339,3 +339,4 @@ settings_development_*.py
 postactivate_*
 media/
 .docker-data/
+whoosh_index/

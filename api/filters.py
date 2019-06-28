@@ -18,5 +18,6 @@ class SearchFilterBackend(filters.BaseFilterBackend):
         # `.filter` is used to allow the auto_query functionality and also allow start search with star, negation
         # and sentence, like: DOC* -DOCG -"Barolo DOCG Langhe"
         # `.models` is used to limit the search on a specific model (Bottle, Location, ...).
-        sqs = SearchQuerySet().models(queryset.model).filter(content=Raw(str(AutoQuery(q))))
+        # sqs = SearchQuerySet().models(queryset.model).filter(content=Raw(str(AutoQuery(q))))
+        sqs = SearchQuerySet().models(queryset.model).filter_or(content=AutoQuery(q))
         return queryset.filter(id__in=[res.pk for res in sqs])

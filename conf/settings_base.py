@@ -152,9 +152,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # HAYSTACK.
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack_elasticsearch.elasticsearch5.Elasticsearch5SearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
+        ## Whoosh.
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'whoosh_index'),
+
+        ## Elasticsearch.
+        # 'ENGINE': 'haystack_elasticsearch.elasticsearch5.Elasticsearch5SearchEngine',
+        # 'URL': 'http://127.0.0.1:9200/',
+        # 'INDEX_NAME': 'haystack',
     },
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'core.search_indexes.RealTimeIndexerSignalProcessor'
