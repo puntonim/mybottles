@@ -7,7 +7,8 @@ from django.conf import settings
 class _ModelAssertionBase:
     def __init__(self, serialized, instance_or_dict):
         self.serialized = serialized
-        # If bottle_instance_or_dict is a dict then change it to a SimpleNamespace to enable the dot notation.
+        # If `instance_or_dict` is a dict then change it to a SimpleNamespace to
+        # enable the dot notation.
         self.object = instance_or_dict
         if isinstance(self.object, dict):
             self.object = SimpleNamespace(**self.object)
@@ -38,10 +39,10 @@ class _ModelAssertionBase:
         return attrs
 
     def _assert_default_attr(self, attr):
-        bottle_val = getattr(self.object, attr)
+        obj_val = getattr(self.object, attr)
         if isinstance(self.serialized[attr], str):
-            bottle_val = str(bottle_val)
-        assert self.serialized[attr] == bottle_val
+            obj_val = str(obj_val)
+        assert self.serialized[attr] == obj_val
 
     def _assert_attr_creation_ts(self):
         creation_ts = self.object.creation_ts.astimezone(pytz.timezone(settings.TIME_ZONE))

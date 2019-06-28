@@ -20,7 +20,7 @@ class TestPurchaseModel(TestCase):
         )
         assert purchase
 
-    def test_validation_in_create_exception(self):
+    def test_validation_error_in_create(self):
         with pytest.raises(ValidationError):
             Purchase.objects.create(
                 bottle=self.bottle,

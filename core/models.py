@@ -81,23 +81,27 @@ class Purchase(models.Model):
     def __str__(self):
         return '{}|bottle={}'.format(self.id, self.bottle)
 
-    def clean(self, *args, **kwargs):
+    def full_clean(self, *args, **kwargs):
         """
-        Validation for Model forms and Django Admin forms. This method is automatically called in any Model form.
+        Validation for Model forms (like Django Admin). This method is automatically called in any Model form.
         Note: this is not called by `obj.save()` by default. But this behavior has been intentionally added by
         overriding `save()`.
         """
         # Use the same validator as the DJRF API serializer does.
-        data = {}
-        for key in [field.name for field in self._meta.fields]:
-            data[key] = getattr(self, key)
-        validators.validate_purchase(data, ValidationError)
-        super().clean(*args, **kwargs)
+        # Note: not nullable ForeignKeys should be checked with an if to avoid the
+        # exception RelatedObjectDoesNotExist.
+        excluded = kwargs.get('exclude', {})
+        if 'bottle' not in excluded:
+            data = {}
+            for key in [field.name for field in self._meta.fields]:
+                data[key] = getattr(self, key)
+            validators.validate_purchase(data, ValidationError)
+        super().full_clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         # Add the validation step by calling `self.clean()` (the same validation step that a Model form (like Django
         # Admin ones do).
-        self.clean()
+        self.full_clean()
         return super().save(*args, **kwargs)
 
 

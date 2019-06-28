@@ -11,8 +11,8 @@ PYTEST:="venv/bin/pytest"
 FLAKE8:="venv/bin/flake8"
 ISORT:="venv/bin/isort"
 
-.PHONY: venvtest requirements pyclean clean pipclean killmanage serve serveplus shell shellplus tests tests-dev recreatedb-dev lint isort isort-check
 
+.PHONY : venvtest
 venvtest:
 	$(VIRTUALENV) -p $(shell which python3) venv
 	. venv/bin/activate
@@ -31,6 +31,7 @@ ifndef VIRTUAL_ENV
 	@exit 1
 endif
 
+.PHONY : requirements
 requirements: _ensure_active_env
 	pip install -U "pip>=19.0" -q
 	pip install -U -r requirements.txt
@@ -38,6 +39,7 @@ requirements: _ensure_active_env
 
 ## Generic utilities.
 
+.PHONY : pyclean
 pyclean:
 	find . -name *.pyc -delete
 	rm -rf *.egg-info build
@@ -45,11 +47,13 @@ pyclean:
 	rm -rf .pytest_cache
 	rm -rf __pycache__
 
+.PHONY : clean
 clean: pyclean
 	rm -rf venv
 	rm -rf .tox
 	rm -rf dist
 
+.PHONY : pipclean
 pipclean:
 	rm -rf ~/Library/Caches/pip
 	rm -rf ~/.cache/pip
@@ -57,36 +61,52 @@ pipclean:
 
 ## Django local dev in the venv currently active.
 
+.PHONY : killmanage
 killmanage: _ensure_active_env
 	# Prefix `-` to continue also in case of return code <> 0.
 	#-pkill -f manage.py
 	pkill -f manage.py
 
+.PHONY : serve
 serve: _ensure_active_env
 	python ./manage.py runserver
 
+.PHONY : serveplus
 serveplus: _ensure_active_env
 	python ./manage.py runserver_plus --nopin
 
+.PHONY : shell
 shell: _ensure_active_env
 	python ./manage.py shell
 
+.PHONY : shellplus
 shellplus: _ensure_active_env
 	python ./manage.py shell_plus
 
-tests-dev: _ensure_active_env
-	#python ./manage.py test
-	pytest tests -s
 
-tests-dev/%: _ensure_active_env
-	pytest tests -s -k $*
+## DB.
 
+.PHONY : recreatedb-dev
 recreatedb-dev: _ensure_active_env
 	scripts/recreatedbdev.sh
 
 
 ## Tests.
 
+# Local dev in in the venv currently active.
+
+.PHONY : tests-dev
+tests-dev: _ensure_active_env
+	#python ./manage.py test
+	pytest tests -s
+
+.PHONY : tests-dev
+tests-dev/%: _ensure_active_env
+	pytest tests -s -k $*
+
+# In a new test venv.
+
+.PHONY : tests
 tests: clean venvtest
 	DJANGO_SETTINGS_MODULE=conf.settings_test $(PYTEST) tests -s
 
@@ -94,11 +114,14 @@ tests: clean venvtest
 ## Linters.
 ## Without TOX.
 
+.PHONY : lint
 lint: _make_venvtest_if_empty
 	$(FLAKE8) .
 
+.PHONY : isort
 isort: _make_venvtest_if_empty
 	$(ISORT) -rc .
 
+.PHONY : isort-check
 isort-check: _make_venvtest_if_empty
 	$(ISORT) -rc -c .
